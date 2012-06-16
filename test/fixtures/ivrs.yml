@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  description: MyString
+  level: 1
+  type: 
+  company_id: 1
+  message: 
+
+two:
+  description: MyString
+  level: 1
+  type: 
+  company_id: 1
+  message: 

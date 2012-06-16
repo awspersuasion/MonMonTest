@@ -1,0 +1,30 @@
+.group
+  = f.label :name, t("activerecord.attributes.customer.name", :default => "Name"), :class => :label
+  = f.text_field :name, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :email, t("activerecord.attributes.customer.email", :default => "Email"), :class => :label
+  = f.text_field :email, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :server_id, t("activerecord.attributes.customer.server_id", :default => "Server"), :class => :label
+  = f.number_field :server_id, :class => 'number_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :lync_server, t("activerecord.attributes.customer.lync_server", :default => "Lync server"), :class => :label
+  = f.text_field :lync_server, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :sip_trunk, t("activerecord.attributes.customer.sip_trunk", :default => "Sip trunk"), :class => :label
+  = f.text_field :sip_trunk, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :office_hour, t("activerecord.attributes.customer.office_hour", :default => "Office hour"), :class => :label
+  = f.text_field :office_hour, :class => 'text_field'
+  %span.description Ex: a simple text
+.group.navform.wat-cf
+  %button.button{:type => "submit"}
+    = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+    = t("web-app-theme.save", :default => "Save")
+  %span.text_button_padding= t("web-app-theme.or", :default => "or")
+  = link_to t("web-app-theme.cancel", :default => "Cancel"), customers_path, :class => "text_button_padding link_button"

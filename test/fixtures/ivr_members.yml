@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  extension_id: 1
+  ivr_id: 1
+
+two:
+  extension_id: 1
+  ivr_id: 1

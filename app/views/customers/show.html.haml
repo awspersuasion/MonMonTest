@@ -1,0 +1,109 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", customers_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_customer_path
+      %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", customer_path
+  .content
+    .inner
+      %table{:style => "width: 100%"}
+        %tr
+          %td
+            %h2
+              = @customer.name
+          %td
+            %b
+              = t("activerecord.attributes.customer.email", :default => t("activerecord.labels.email", :default => "Email"))
+              \:
+            = @customer.email
+        %tr
+          %td
+            %b
+              = t("activerecord.attributes.customer.server_id", :default => t("activerecord.labels.server_id", :default => "Server"))
+              \:
+            = @customer.server_id
+          %td
+            %b
+              = t("activerecord.attributes.customer.office_hour", :default => t("activerecord.labels.office_hour", :default => "Office hour"))
+              \:
+            = @customer.office_hour
+        %tr
+          %td
+            %b
+              = t("activerecord.attributes.customer.lync_server", :default => t("activerecord.labels.lync_server", :default => "Lync server"))
+              \:
+            = @customer.lync_server
+          %td
+            %b
+              = t("activerecord.attributes.customer.sip_trunk", :default => t("activerecord.labels.sip_trunk", :default => "Sip trunk"))
+              \:
+            = @customer.sip_trunk
+      %br
+      .wat-cf
+        = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_customer_path(@customer), :class => "button"
+        = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), customer_path(@customer), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+      %br
+      %hr
+      %br
+      %h2 Extensions 
+      :javascript
+        function edit_extension(name, ext) {
+          document.getElementById('extension_name').value = name;
+          document.getElementById('extension_extension').value = ext;
+        }
+      = form_for :extension, :url => extensions_path, :html => { :class => :form } do |f|
+        %table
+          %tr{:style => "vertical-align: bottom;"}
+            %td
+              = f.label :extension, t("activerecord.attributes.extension.extension", :default => "Extension"), :class => :label
+              = f.text_field :extension, :class => 'text_field', :size => 10
+            %td &nbsp;&nbsp;&nbsp;&nbsp;
+            %td
+              = f.label :name, t("activerecord.attributes.extension.name", :default => "Name"), :class => :label
+              = f.text_field :name, :class => 'text_field', :size => 30
+            %td &nbsp;&nbsp;&nbsp;&nbsp;
+            %td
+              = hidden_field :extension, :customer_id, :value => @customer.id
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Add")}")
+                = t("web-app-theme.save", :default => "Add")
+      %br
+      %table.table
+        %tr
+          %th.first
+          %th Extension
+          %th Name
+          %th.last &nbsp
+        - @extensions.each do |ext|
+          %tr{:class => cycle("odd", "even")}
+            %td
+            %td
+              = ext.extension
+            %td
+              = ext.name
+            %td.last
+              = link_to 'Edit', '#', :onclick => "edit_extension('#{ext.name}', '#{ext.extension}')"
+              |
+              = link_to "#{t("web-app-theme.delete", :default => "Remove")}", extension_path(ext), :method => :delete
+      %br
+      %h2 IVR Groups
+      %table.table
+        %tr
+          %th.first #
+          %th Description
+          %th Type
+          %th Members
+          %th.last &nbsp
+        - @menu.each do |item|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = link_to item.level, "#", :onclick => "load_form(#{item.level}, '#{item.description}', '#{item.call_type}')"
+            %td
+              = item.description
+            %td
+              = item.call_type
+            %td
+              John Doe, Joe Blow, Alex Smart, Bill Gates, George
+            %td.last
+              Upload voice | Change | Clear
+- content_for :sidebar, render(:partial => 'sidebar')

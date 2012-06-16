@@ -1,0 +1,79 @@
+.block
+  %h3 IVR Group
+  .content
+    %h2
+    .inner
+      = form_for :ivr, :url => ivrs_path, :html => { :class => :form } do |f|
+        .group
+          = f.label :description, t("activerecord.attributes.ivr.description", :default => "Description"), :class => :label
+          = f.text_field :description, :class => 'text_field'
+        .group
+          = f.label :call_type, t("activerecord.attributes.ivr.call_type", :default => "Type"), :class => :label
+          = select_tag "ivr[call_type]", options_for_select(['NONE', 'RING GROUP', 'HUNT GROUP'])
+        .group
+          %table{:style => "width: 100%"}
+            %tr
+              %td{:style => "width: 40%"}
+                = f.label :member, t("activerecord.attributes.ivr.member", :default => "Member"), :class => :label
+              %td{:style => "width: 10%"}
+              %td{:style => "width: 10%"}
+                = hidden_field :ivr, :level, :value => ""
+                = hidden_field :ivr, :customer_id, :value => @customer.id
+              %td
+                = f.label :avail, t("activerecord.attributes.ivr.avail", :default => "Avail"), :class => :label
+            %tr
+              :javascript
+                function move_item(from, to) {
+                  var from_options = document.getElementById(from).options;
+                  var to = document.getElementById(to);
+                  var i;
+                  for (i=0;i<from_options.length; i++) {
+                    if (from_options.item(i).selected == true && from_options.item(i).text != "NONE") {
+                      if (to.item(0).text == "NONE")
+                        to.remove(0);
+                      from_options.item(i).selected = false;
+
+                      to.add(from_options.item(i));
+                    }
+                  }
+                  if (from_options.length == 0) {
+                    var option = document.createElement("option");
+                    option.text = "NONE";
+                    from_options.add(option);
+                  }
+                }
+                function load_member() {
+                  var mem_options = document.getElementById("ivr_member").options;
+                  var i;
+                  for (i=0;i<mem_options.length; i++) {
+                    if (mem_options.item(i).value != "NONE")
+                      mem_options.item(i).selected = true;
+                  }
+                  
+                  var avail = document.getElementById("ivr_avail");
+                  avail.remove();
+                }
+                function load_form(l, desc, ctype) {
+                  document.getElementById("ivr_level").value = l;
+                  document.getElementById("ivr_description").value = desc;
+                  document.getElementById("ivr_call_type").value = ctype;
+                }
+              %td
+                = select_tag "ivr[member]", options_for_select(["NONE"]), :size => 4, :multiple => true
+              %td{:style => "veritical-align: bottom"}
+                %button.button{:type => "button", :onclick => 'move_item("ivr_avail", "ivr_member")'}
+                  = t("web-app-theme.add", :default => "<-")
+                &nbsp;
+                %button.button{:type => "button", :onclick => 'move_item("ivr_member", "ivr_avail")'}
+                  = t("web-app-theme.add", :default => "->")
+              %td
+              %td
+                - if @extensions.empty?
+                  = select_tag "ivr[avail]", options_for_select(["NONE"]), :size => 4
+                - else
+                  - exts = @extensions.map {|c| c.extension}.flatten.uniq.sort
+                  = select_tag "ivr[avail]", options_for_select(exts), :size => 4
+        .group.navform.wat-cf
+          %button.button{:type => "submit", :onclick => 'load_member()'}
+            = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Add")}")
+            = t("web-app-theme.save", :default => "OK")
